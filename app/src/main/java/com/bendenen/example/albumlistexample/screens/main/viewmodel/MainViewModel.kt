@@ -9,6 +9,6 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(private val liveDataProvider: SavedAlbumsLiveDataProvider) : ViewModel() {
 
-    val carDescriptions: LiveData<Resource<List<Album>>> = liveDataProvider.getSavedAlbumList()
+    val albums: LiveData<Resource<List<Album>>> = liveDataProvider.getSavedAlbumList()
 
 }
