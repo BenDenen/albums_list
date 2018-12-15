@@ -1,7 +1,8 @@
-package com.bendenen.example.albumlistexample
+package com.bendenen.example.albumlistexample.screens.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bendenen.example.albumlistexample.R
 
 class MainActivity : AppCompatActivity() {
 
