@@ -43,6 +43,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Field for Base Url for WebService.
+        // For now it is the same value for 'debug' and 'release' build types but could be easily
+        // changed for testing
+        buildConfigField 'String', 'URL', '"http://ws.audioscrobbler.com/"'
     }
     buildTypes {
         release {

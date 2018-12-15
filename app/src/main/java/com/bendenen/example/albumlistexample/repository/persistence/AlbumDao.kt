@@ -1,4 +1,4 @@
-package com.bendenen.example.albumlistexample.repository
+package com.bendenen.example.albumlistexample.repository.persistence
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
