@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bendenen.example.albumlistexample.R
 import com.bendenen.example.albumlistexample.screens.main.viewmodel.MainViewModel
 import com.bendenen.example.albumlistexample.utils.ResourceObserver
+import com.bendenen.example.albumlistexample.utils.extensions.hide
+import com.bendenen.example.albumlistexample.utils.extensions.show
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -38,7 +40,14 @@ class MainActivity : AppCompatActivity() {
                         hideLoading = ::hideLoading,
                         showLoading = ::showLoading,
                         onSuccess = {
+                            if(it.isNullOrEmpty()) {
+                                album_list.hide()
+                                empty_list.show()
+                                return@ResourceObserver
+                            }
                             adapter.setData(it)
+                            empty_list.hide()
+
                         },
                         onError = ::showErrorMessage
                     )
