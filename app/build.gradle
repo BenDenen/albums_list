@@ -7,6 +7,9 @@ ext {
     // lifecycle
     lifecycle_version = '2.0.0'
 
+    // UI
+    card_view_version = '1.0.0'
+
     // DI
     dagger_version = '2.15'
 
@@ -69,6 +72,9 @@ dependencies {
     // Support
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+
+    // UI
+    implementation "androidx.cardview:cardview:$card_view_version"
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
