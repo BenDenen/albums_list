@@ -26,6 +26,9 @@
         <activity
                 android:label="@string/search_artist_title"
                 android:name=".screens.search.SearchActivity"/>
+        <activity
+                android:label="@string/top_albums_title"
+                android:name=".screens.topalbums.TopAlbumsActivity"/>
     </application>
 
 </manifest>

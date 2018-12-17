@@ -33,7 +33,7 @@ class SearchArtistLiveDataProvider @Inject constructor(
                 }
             }
 
-            override fun shouldLoadFromNetwork(data: SearchArtistResponse?): Boolean = true
+            override fun shouldLoadFromNetwork(data: SearchArtistResponse?): Boolean = utils.hasConnection()
 
             override fun loadFromDatabase(): LiveData<SearchArtistResponse> {
                 Log.d(TAG, "loadFromDatabase")

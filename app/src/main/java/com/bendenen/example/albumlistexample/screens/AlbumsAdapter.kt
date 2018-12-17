@@ -1,4 +1,4 @@
-package com.bendenen.example.albumlistexample.screens.main
+package com.bendenen.example.albumlistexample.screens
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,22 +11,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bendenen.example.albumlistexample.R
 import com.bendenen.example.albumlistexample.models.Album
 import com.bendenen.example.albumlistexample.models.ImageDescription
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
-class SavedAlbumsAdapter(context: Context) : RecyclerView.Adapter<SavedAlbumsAdapter.SavedAlbumViewHolder>() {
+class AlbumsAdapter(context: Context) : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
 
     private val dataList = ArrayList<Album>()
 
     private val layoutInflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedAlbumViewHolder =
-        SavedAlbumViewHolder(layoutInflater.inflate(R.layout.saved_album_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder =
+        AlbumViewHolder(
+            layoutInflater.inflate(
+                R.layout.saved_album_item,
+                parent,
+                false
+            )
+        )
 
     override fun getItemCount(): Int = dataList.size
 
-    override fun onBindViewHolder(holder: SavedAlbumViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
         holder.album = dataList[position]
     }
 
@@ -38,6 +43,8 @@ class SavedAlbumsAdapter(context: Context) : RecyclerView.Adapter<SavedAlbumsAda
         dataList.addAll(newData)
         diffResult.dispatchUpdatesTo(this)
     }
+
+    fun getDataList(): List<Album> = dataList
 
     internal inner class PostDiffCallback(
         private val oldAlbumList: List<Album>,
@@ -53,7 +60,8 @@ class SavedAlbumsAdapter(context: Context) : RecyclerView.Adapter<SavedAlbumsAda
         }
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldAlbumList[oldItemPosition].mbid === newAlbumList[newItemPosition].mbid
+            return (oldAlbumList[oldItemPosition].name === newAlbumList[newItemPosition].name)
+                    && (oldAlbumList[oldItemPosition].artist.mbid === newAlbumList[newItemPosition].artist.mbid)
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -61,7 +69,7 @@ class SavedAlbumsAdapter(context: Context) : RecyclerView.Adapter<SavedAlbumsAda
         }
     }
 
-    class SavedAlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val albumImage: ImageView = itemView.findViewById(R.id.album_image)
         private val albumName: TextView = itemView.findViewById(R.id.album_name)
@@ -83,18 +91,21 @@ class SavedAlbumsAdapter(context: Context) : RecyclerView.Adapter<SavedAlbumsAda
                         imageUrl =
                                 this.image.firstOrNull { it.size == ImageDescription.SizeType.EXTRA_LARGE }?.text
                     }
+                    if (imageUrl != null && imageUrl.trim().isEmpty()) {
+                        imageUrl = null
+                    }
                     return imageUrl
                 }
                 picasso
                     .load(album?.getListImageUrl())
-                    .networkPolicy(NetworkPolicy.OFFLINE)
                     .error(R.drawable.ic_no_image_available)
+                    .placeholder(R.drawable.ic_no_image_available)
                     .resize(imageSize, imageSize)
                     .centerInside()
                     .into(albumImage)
 
                 albumName.text = album?.name ?: itemView.context.getString(R.string.no_name)
-                artistName.text = album?.artist ?: itemView.context.getString(R.string.undefined)
+                artistName.text = album?.artist?.name ?: itemView.context.getString(R.string.undefined)
             }
 
 

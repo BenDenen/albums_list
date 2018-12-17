@@ -11,7 +11,13 @@ import com.bendenen.example.albumlistexample.models.Album
 interface AlbumDao {
 
     @Query("SELECT * FROM album")
-    fun queryAlbumList(): LiveData<List<Album>>
+    fun queryAllAlbumList(): LiveData<List<Album>>
+
+    @Query("SELECT * FROM album WHERE artist_mbid LIKE :artistId")
+    fun queryAlbumList(artistId: String): LiveData<List<Album>>
+
+    @Query("DELETE FROM album WHERE artist_mbid LIKE :artistId AND name LIKE :albumName")
+    fun deleteAlbumWithNameAndId(artistId: String, albumName: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAlbum(album: Album)
