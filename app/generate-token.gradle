@@ -1,0 +1,26 @@
+//
+// Configuration file for adding a developer-config.xml containing the LAST_FM_API_TOKEN env. variable.
+//
+task accessToken {
+    def tokenFile = new File("${projectDir}/src/main/res/values/developer-config.xml")
+    if (!tokenFile.exists()) {
+        String envToken = "$System.env.LAST_FM_API_TOKEN"
+        if (envToken == "null") {
+            envToken = "YOUR_LAST_FM_API_TOKEN_GOES_HERE"
+        }
+        String tokenFileContents = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                "<resources>\n" +
+                "    <string name=\"last_fm_api_token\">" + envToken + "</string>\n" +
+                "</resources>"
+
+        if (tokenFileContents == null) {
+            throw new InvalidUserDataException("You haven't set the YOUR_LAST_FM_API_TOKEN_GOES_HERE environment variable. " +
+                    "Replace YOUR_LAST_FM_API_TOKEN_GOES_HERE in /src/main/res/values/developer-config.xml")
+        }
+        tokenFile.write(tokenFileContents)
+    }
+}
+
+gradle.projectsEvaluated {
+    preBuild.dependsOn('accessToken')
+}

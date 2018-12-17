@@ -6,6 +6,8 @@
 
     <string name="action_search">Search</string>
 
+    <string name="search_empty_error">Search field is empty</string>
+
     <string name="search_artist_title">Search Artist</string>
     <string name="search_artist_hint">Enter artist name</string>
 
