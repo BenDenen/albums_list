@@ -1,6 +1,8 @@
 package com.bendenen.example.albumlistexample.screens.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,12 +11,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bendenen.example.albumlistexample.R
 import com.bendenen.example.albumlistexample.screens.main.viewmodel.MainViewModel
+import com.bendenen.example.albumlistexample.screens.search.SearchActivity
 import com.bendenen.example.albumlistexample.utils.ResourceObserver
 import com.bendenen.example.albumlistexample.utils.extensions.hide
 import com.bendenen.example.albumlistexample.utils.extensions.show
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                         hideLoading = ::hideLoading,
                         showLoading = ::showLoading,
                         onSuccess = {
-                            if(it.isNullOrEmpty()) {
+                            if (it.isNullOrEmpty()) {
                                 album_list.hide()
                                 empty_list.show()
                                 return@ResourceObserver
@@ -54,6 +58,19 @@ class MainActivity : AppCompatActivity() {
                 )
 
             }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_screen_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_search ->
+                startActivity(SearchActivity.createIntent(this))
+        }
+        return true
     }
 
     private fun showErrorMessage(error: String) {

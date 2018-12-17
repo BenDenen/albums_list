@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <dimen name="dp8">8dp</dimen>
+
     <dimen name="saved_album_image_size">60dp</dimen>
     <dimen name="saved_album_text_margin">16dp</dimen>
+
+    <dimen name="search_button_size">48dp</dimen>
 </resources>
