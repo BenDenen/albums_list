@@ -1,4 +1,4 @@
-# map-list-example
+# albums-list-example
 Example of simple app which display list of albums using Last FM API
 
 ## Note
