@@ -35,7 +35,7 @@ abstract class Repository<T>(private val appExecutors: AppExecutors) {
             try {
                 val response = createNetworkCall()?.execute()
 
-                println("response is: $response")
+                println("response is: ${response?.body()}")
 
                 when (response?.isSuccessful) {
                     true -> appExecutors.diskIO().execute {

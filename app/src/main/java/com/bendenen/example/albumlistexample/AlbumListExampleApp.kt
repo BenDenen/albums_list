@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import com.bendenen.example.albumlistexample.di.components.DaggerAppComponent
 import com.bendenen.example.albumlistexample.di.modules.AppModule
+import com.bendenen.example.albumlistexample.di.modules.NetModule
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -20,6 +21,7 @@ class AlbumListExampleApp : Application(), HasActivityInjector {
         DaggerAppComponent
             .builder()
             .appModule(AppModule(this))
+            .netModule(NetModule(BuildConfig.URL))
             .build()
             .inject(this)
 

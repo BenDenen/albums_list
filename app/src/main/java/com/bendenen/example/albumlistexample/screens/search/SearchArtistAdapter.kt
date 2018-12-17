@@ -1,6 +1,7 @@
-package com.bendenen.example.albumlistexample.screens.main
+package com.bendenen.example.albumlistexample.screens.search
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,28 +10,29 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bendenen.example.albumlistexample.R
-import com.bendenen.example.albumlistexample.models.Album
+import com.bendenen.example.albumlistexample.models.Artist
 import com.bendenen.example.albumlistexample.models.ImageDescription
+import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
-class SavedAlbumsAdapter(context: Context) : RecyclerView.Adapter<SavedAlbumsAdapter.SavedAlbumViewHolder>() {
+class SearchArtistAdapter(context: Context) : RecyclerView.Adapter<SearchArtistAdapter.ArtistViewHolder>() {
 
-    private val dataList = ArrayList<Album>()
+    private val dataList = ArrayList<Artist>()
 
     private val layoutInflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedAlbumViewHolder =
-        SavedAlbumViewHolder(layoutInflater.inflate(R.layout.saved_album_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistViewHolder =
+        ArtistViewHolder(layoutInflater.inflate(R.layout.artist_item, parent, false))
 
     override fun getItemCount(): Int = dataList.size
 
-    override fun onBindViewHolder(holder: SavedAlbumViewHolder, position: Int) {
-        holder.album = dataList[position]
+    override fun onBindViewHolder(holder: ArtistViewHolder, position: Int) {
+        holder.artist = dataList[position]
     }
 
-    fun setData(newData: List<Album>) {
+    fun setData(newData: List<Artist>) {
         val postDiffCallback = PostDiffCallback(dataList, newData)
         val diffResult = DiffUtil.calculateDiff(postDiffCallback)
 
@@ -40,61 +42,59 @@ class SavedAlbumsAdapter(context: Context) : RecyclerView.Adapter<SavedAlbumsAda
     }
 
     internal inner class PostDiffCallback(
-        private val oldAlbumList: List<Album>,
-        private val newAlbumList: List<Album>
+        private val oldArtistList: List<Artist>,
+        private val newArtisiList: List<Artist>
     ) : DiffUtil.Callback() {
 
         override fun getOldListSize(): Int {
-            return oldAlbumList.size
+            return oldArtistList.size
         }
 
         override fun getNewListSize(): Int {
-            return newAlbumList.size
+            return newArtisiList.size
         }
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldAlbumList[oldItemPosition].mbid === newAlbumList[newItemPosition].mbid
+            return oldArtistList[oldItemPosition].mbid === newArtisiList[newItemPosition].mbid
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldAlbumList[oldItemPosition] == newAlbumList[newItemPosition]
+            return oldArtistList[oldItemPosition] == newArtisiList[newItemPosition]
         }
     }
 
-    class SavedAlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val albumImage: ImageView = itemView.findViewById(R.id.album_image)
-        private val albumName: TextView = itemView.findViewById(R.id.album_name)
+        private val artistImage: ImageView = itemView.findViewById(R.id.artist_image)
         private val artistName: TextView = itemView.findViewById(R.id.artist_name)
-        private val picasso = Picasso.with(itemView.context)
+        private val picasso = Picasso.with(itemView.context).also { it.setLoggingEnabled(true); }
 
         private val imageSize = itemView.context.resources.getDimensionPixelSize(R.dimen.saved_album_image_size)
 
-        var album: Album? = null
+        var artist: Artist? = null
             set(value) {
                 field = value
 
-                fun Album.getListImageUrl(): String? {
-                    var imageUrl = this.image.firstOrNull { it.size == ImageDescription.SizeType.MEDIUM }?.text
-                    if (imageUrl == null) {
-                        imageUrl = this.image.firstOrNull { it.size == ImageDescription.SizeType.LARGE }?.text
-                    }
+                fun Artist.getListImageUrl(): String? {
+                    var imageUrl = this.image.firstOrNull { it.size == ImageDescription.SizeType.LARGE }?.text
                     if (imageUrl == null) {
                         imageUrl =
                                 this.image.firstOrNull { it.size == ImageDescription.SizeType.EXTRA_LARGE }?.text
                     }
+                    if (imageUrl != null && imageUrl.trim().isEmpty()) {
+                        imageUrl = null
+                    }
                     return imageUrl
                 }
                 picasso
-                    .load(album?.getListImageUrl())
-                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .load(artist?.getListImageUrl())
                     .error(R.drawable.ic_no_image_available)
+                    .placeholder(R.drawable.ic_no_image_available)
                     .resize(imageSize, imageSize)
                     .centerInside()
-                    .into(albumImage)
+                    .into(artistImage)
 
-                albumName.text = album?.name ?: itemView.context.getString(R.string.no_name)
-                artistName.text = album?.artist ?: itemView.context.getString(R.string.undefined)
+                artistName.text = artist?.name ?: itemView.context.getString(R.string.undefined)
             }
 
 

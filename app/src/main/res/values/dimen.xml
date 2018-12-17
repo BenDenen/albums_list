@@ -3,8 +3,12 @@
 
     <dimen name="dp8">8dp</dimen>
 
+    <dimen name="sp14">14sp</dimen>
+
     <dimen name="saved_album_image_size">60dp</dimen>
     <dimen name="saved_album_text_margin">16dp</dimen>
+
+    <dimen name="artist_image_size">100dp</dimen>
 
     <dimen name="search_button_size">48dp</dimen>
 </resources>
