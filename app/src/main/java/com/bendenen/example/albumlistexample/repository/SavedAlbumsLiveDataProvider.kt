@@ -35,7 +35,7 @@ open class SavedAlbumsLiveDataProvider @Inject constructor(
 
             override fun loadFromDatabase(): LiveData<List<Album>> {
                 Log.d(TAG, "loadFromDatabase")
-                return albumDao.queryAlbumList()
+                return albumDao.queryAllAlbumList()
             }
 
             override fun createNetworkCall(): Call<List<Album>>? {

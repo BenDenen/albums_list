@@ -1,7 +1,6 @@
 package com.bendenen.example.albumlistexample.screens.search
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bendenen.example.albumlistexample.R
 import com.bendenen.example.albumlistexample.models.Artist
 import com.bendenen.example.albumlistexample.models.ImageDescription
-import com.squareup.picasso.Callback
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
 class SearchArtistAdapter(context: Context) : RecyclerView.Adapter<SearchArtistAdapter.ArtistViewHolder>() {
@@ -40,6 +37,8 @@ class SearchArtistAdapter(context: Context) : RecyclerView.Adapter<SearchArtistA
         dataList.addAll(newData)
         diffResult.dispatchUpdatesTo(this)
     }
+
+    fun getDataList(): List<Artist> = dataList
 
     internal inner class PostDiffCallback(
         private val oldArtistList: List<Artist>,

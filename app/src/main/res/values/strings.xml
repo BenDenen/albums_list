@@ -11,4 +11,10 @@
     <string name="search_artist_title">Search Artist</string>
     <string name="search_artist_hint">Enter artist name</string>
 
+    <string name="top_albums_title">Top Albums</string>
+
+    <string name="top_albums_delete_title">Delete Album</string>
+    <string name="top_albums_delete_text">Do you want to delete album %s</string>
+    <string name="top_albums_delete_ok">OK</string>
+
 </resources>

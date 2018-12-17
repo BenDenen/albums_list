@@ -3,7 +3,6 @@ package com.bendenen.example.albumlistexample.screens.search
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bendenen.example.albumlistexample.R
-import com.bendenen.example.albumlistexample.screens.main.viewmodel.MainViewModel
 import com.bendenen.example.albumlistexample.screens.search.viewmodel.SearchViewModel
+import com.bendenen.example.albumlistexample.screens.topalbums.TopAlbumsActivity
+import com.bendenen.example.albumlistexample.utils.ItemClickSupport
 import com.bendenen.example.albumlistexample.utils.ResourceObserver
 import com.bendenen.example.albumlistexample.utils.extensions.hide
 import com.bendenen.example.albumlistexample.utils.extensions.show
@@ -33,9 +33,18 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        artisi_list.layoutManager = GridLayoutManager(this,2) as RecyclerView.LayoutManager?
+        artisi_list.layoutManager = GridLayoutManager(this, 2) as RecyclerView.LayoutManager?
         val adapter = SearchArtistAdapter(this)
         artisi_list.adapter = adapter
+
+        ItemClickSupport
+            .addTo(artisi_list)
+            .setOnItemClickListener(object : ItemClickSupport.OnItemClickListener {
+                override fun onItemClicked(recyclerView: RecyclerView, position: Int, v: View) {
+                    val item = adapter.getDataList()[position]
+                    startActivity(TopAlbumsActivity.createIntent(this@SearchActivity, item.mbid))
+                }
+            })
 
         searchViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(SearchViewModel::class.java).also { it ->
@@ -46,14 +55,13 @@ class SearchActivity : AppCompatActivity() {
                         showLoading = ::showLoading,
                         onSuccess = {
                             val artists = it.results.artistmatches.artist
-                            if (artists.isNullOrEmpty() ) {
-                                Log.e("MyTag", "Null")
+                            if (artists.isNullOrEmpty()) {
                                 artisi_list.hide()
                                 empty_list.show()
                                 return@ResourceObserver
                             }
-                            Log.e("MyTag", "Not Null")
                             adapter.setData(artists)
+                            artisi_list.show()
                             empty_list.hide()
                         },
                         onError = ::showErrorMessage
@@ -64,7 +72,7 @@ class SearchActivity : AppCompatActivity() {
 
         search_button.setOnClickListener {
             val text = search_view.text.toString()
-            if(text.isEmpty()) {
+            if (text.isEmpty()) {
                 Toast.makeText(this, R.string.search_empty_error, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }

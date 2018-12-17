@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bendenen.example.albumlistexample.R
+import com.bendenen.example.albumlistexample.screens.AlbumsAdapter
 import com.bendenen.example.albumlistexample.screens.main.viewmodel.MainViewModel
 import com.bendenen.example.albumlistexample.screens.search.SearchActivity
 import com.bendenen.example.albumlistexample.utils.ResourceObserver
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         album_list.layoutManager = LinearLayoutManager(this)
-        val adapter = SavedAlbumsAdapter(this)
+        val adapter = AlbumsAdapter(this)
         album_list.adapter = adapter
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory)
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                                 return@ResourceObserver
                             }
                             adapter.setData(it)
+                            album_list.show()
                             empty_list.hide()
 
                         },
